@@ -21,6 +21,14 @@ public class CalculatorTest {
         assertEquals(7, resultAdd, 0);
     }
 
+    
+
+    @Test
+    public void calculator_CorrectSub_ReturnsTrue() {
+        double resultSub = mCalculator.sub(4, 3);
+        assertEquals(1, resultSub, 0);
+    }
+    
     @After
     public void tearDown() {
         mCalculator = null;
