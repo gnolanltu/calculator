@@ -1,4 +1,30 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
+
+
+jacoco {
+    toolVersion = "0.7.7.201606060606"
+}
+
+def fileFilter = [
+        'com/androidjacoco/sample/**/view/**.*',
+        '**/R.class', '**/R$*.class', '**/BuildConfig.*',
+        '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+def mainSrc = "${project.projectDir}/src/main/java"
+
+
+task customJacocoTestReport(type: JacocoReport, dependsOn: 'test') {
+
+    reports {
+        html.enabled = true
+        html.destination = "${buildDir}/reports/jacoco"
+    }
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = files("${buildDir}/jacoco/testDebugUnitTest.exec")
+}
 
 android {
     compileSdkVersion 23
@@ -20,9 +46,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            testCoverageEnabled true
-        }
     }
     productFlavors {
     }
@@ -32,13 +55,6 @@ android {
     }   
 }
 
-android.testOptions {
-    unitTests.all {
-        jacoco {
-            includeNoLocationClasses true
-        }
-    }
-}
 
 dependencies {
     // Unit testing dependencies.
