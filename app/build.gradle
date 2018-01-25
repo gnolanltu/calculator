@@ -1,17 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
-
-jacoco {
-    toolVersion "0.8"
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled false
-    }
-}
-
 
 android {
     compileSdkVersion 23
